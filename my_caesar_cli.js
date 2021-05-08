@@ -14,10 +14,11 @@ program.parse(process.argv);
 const options = program.opts();
 
 const { shift, input, output, action } = options;
-console.log('shift is', shift);
-console.log('input is', input);
-console.log('output is', output);
-console.log('action is', action);
+
+const putIn = input ? fs.createReadStream(input) : process.stdin;
+const putOut = output
+  ? fs.createWriteStream(output, { flags: 'a' })
+  : process.stdout;
 
 class CaesarTransformer extends Transform {
   constructor(options) {
@@ -42,6 +43,4 @@ class CaesarTransformer extends Transform {
   }
 }
 
-fs.createReadStream(input)
-  .pipe(new CaesarTransformer())
-  .pipe(fs.createWriteStream(output, { flags: 'a' }));
+putIn.pipe(new CaesarTransformer()).pipe(putOut);
