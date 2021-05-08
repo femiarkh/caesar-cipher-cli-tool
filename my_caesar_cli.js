@@ -3,6 +3,7 @@ const program = new commander.Command();
 const fs = require('fs');
 const checkExistence = require('./check-existence');
 const CaesarTransformer = require('./CaesarTransformer');
+const validateArguments = require('./validateArguments');
 
 program
   .requiredOption('-s, --shift <value>', 'a shift')
@@ -14,6 +15,8 @@ program.parse(process.argv);
 const options = program.opts();
 
 const { shift, input, output, action } = options;
+
+validateArguments(parseInt(shift, 10), action);
 
 if (input) {
   checkExistence(input);
