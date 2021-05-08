@@ -32,9 +32,15 @@ class CaesarTransformer extends Transform {
   _transform(chunk, encoding, next) {
     let _action = action;
     let _shift = shift;
+    if (shift > 26) {
+      _shift = shift % 26;
+    }
+    if (shift < -26) {
+      _shift = -(-shift % 26);
+    }
     if (shift < 0) {
       _action = action === 'encode' ? 'decode' : 'encode';
-      _shift = -shift;
+      _shift = -_shift;
     }
 
     const transformed = transform(chunk, _action, _shift, [
