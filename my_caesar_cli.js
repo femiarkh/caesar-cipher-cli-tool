@@ -2,6 +2,7 @@ const commander = require('commander');
 const program = new commander.Command();
 const fs = require('fs');
 const { Transform } = require('stream');
+const checkExistence = require('./check-existence');
 const transform = require('./transform');
 
 program
@@ -14,6 +15,9 @@ program.parse(process.argv);
 const options = program.opts();
 
 const { shift, input, output, action } = options;
+
+checkExistence(input);
+checkExistence(output);
 
 const putIn = input ? fs.createReadStream(input) : process.stdin;
 const putOut = output
