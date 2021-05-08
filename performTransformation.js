@@ -1,4 +1,4 @@
-module.exports = function transform(chunk, action, shift, ranges) {
+module.exports = function performTransformation(chunk, action, shift, ranges) {
   const dataArray = chunk.toString().split('');
   const resultArray = [];
   if (action === 'encode') {
