@@ -16,8 +16,12 @@ const options = program.opts();
 
 const { shift, input, output, action } = options;
 
-checkExistence(input);
-checkExistence(output);
+if (input) {
+  checkExistence(input);
+}
+if (output) {
+  checkExistence(output);
+}
 
 const putIn = input ? fs.createReadStream(input) : process.stdin;
 const putOut = output
