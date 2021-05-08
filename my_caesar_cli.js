@@ -2,6 +2,7 @@ const commander = require('commander');
 const program = new commander.Command();
 const fs = require('fs');
 const { Transform } = require('stream');
+const transform = require('./transform');
 
 program
   .requiredOption('-s, --shift <value>', 'a shift')
@@ -24,8 +25,19 @@ class CaesarTransformer extends Transform {
   }
 
   _transform(chunk, encoding, next) {
-    const data = chunk.toString();
-    this.push(data.toUpperCase());
+    let _action = action;
+    let _shift = shift;
+    if (shift < 0) {
+      _action = action === 'encode' ? 'decode' : 'encode';
+      _shift = -shift;
+    }
+
+    const transformed = transform(chunk, _action, _shift, [
+      [65, 90],
+      [97, 122],
+    ]);
+
+    this.push(transformed);
     next();
   }
 }
