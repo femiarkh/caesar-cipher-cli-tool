@@ -1,5 +1,7 @@
 const commander = require('commander');
 const program = new commander.Command();
+const fs = require('fs');
+const { Transform } = require('stream');
 
 program
   .requiredOption('-s, --shift <value>', 'a shift')
@@ -15,3 +17,19 @@ console.log('shift is', shift);
 console.log('input is', input);
 console.log('output is', output);
 console.log('action is', action);
+
+class CaesarTransformer extends Transform {
+  constructor(options) {
+    super(options);
+  }
+
+  _transform(chunk, encoding, next) {
+    const data = chunk.toString();
+    this.push(data.toUpperCase());
+    next();
+  }
+}
+
+fs.createReadStream(input)
+  .pipe(new CaesarTransformer())
+  .pipe(fs.createWriteStream(output, { flags: 'a' }));
