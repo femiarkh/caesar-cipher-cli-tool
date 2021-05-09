@@ -1,5 +1,5 @@
 const { Transform } = require('stream');
-const performTransformation = require('./performTransformation');
+const performTransformation = require('./perform-transformation');
 
 module.exports = class CaesarTransformer extends Transform {
   constructor(options, action, shift) {
